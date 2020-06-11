@@ -4,53 +4,60 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 /**
-输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的。
+输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
 
-示例1：
+B是A的子结构， 即 A中有出现和B相同的结构和节点值。
 
-输入：1->2->4, 1->3->4
-输出：1->1->2->3->4->4
+例如:
+给定的树 A:
+
+     3
+    / \
+   4   5
+  / \
+ 1   2
+给定的树 B：
+
+   4 
+  /
+ 1
+返回 true，因为 B 与 A 的一个子树拥有相同的结构和节点值。
+
+示例 1：
+
+输入：A = [1,2,3], B = [3,1]
+输出：false
+示例 2：
+
+输入：A = [3,4,5,1,2], B = [4,1]
+输出：true
+限制：
+
+0 <= 节点个数 <= 10000
 
 来源：力扣（LeetCode）
-链接：https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof
+链接：https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class solution26 {
-//	public static void main(String[] args) {
-//		int[] nums = {1,2,3,4};
-//		int[] i = new Solution().exchange(nums);
-//		for (int j : i) {
-//			System.out.println(j);
-//		}
-//	}
 	
-//	  Definition for singly-linked list.
-	  public class ListNode {
+//	 Definition for a binary tree node.
+	  public class TreeNode {
 	      int val;
-	      ListNode next;
-	      ListNode(int x) { val = x; }
+	      TreeNode left;
+	      TreeNode right;
+	      TreeNode(int x) { val = x; }
 	  }
-	 
-	  class Solution {
-		  public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-			  	ListNode dum = new ListNode(0);
-			  	ListNode cur = dum;
-			  	while(l1 != null && l2 != null){
-			  		if(l1.val >= l2.val){
-			  			cur.next = l2;
-			  			l2 = l2.next;
-			  		}else {
-			  			cur.next = l1;
-			  			l1 = l1.next;
-			  		}
-			  		cur = cur.next;
-			  	}
-			  	if(l2 == null) cur.next = l1;
-			  	if(l1 == null) cur.next = l2;			  	
-			  	return dum.next;
-		    }
-
-	   
+	
+	class Solution {
+	    public boolean isSubStructure(TreeNode A, TreeNode B) {
+	    	return (A != null && B != null)&&(recur(A,B)||isSubStructure(A.left, B)||isSubStructure(A.right, B));
+	    }
+	    public boolean recur(TreeNode A,TreeNode B){
+	    	if(B == null) return false;
+	    	if(A == null||A.val != B.val) return false;
+	    	return recur(A.left,B.left)&&recur(A.right,B.right);
+	    }
 	}
 }
 
